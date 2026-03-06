@@ -1,17 +1,26 @@
 let allIssues = [];
 
+const allIssueContainer = document.getElementById("allIssueContainer");
+const loadingSpinner = document.getElementById("loadingSpinner");
+
+const allTab = document.getElementById("allTab");
+const openTab = document.getElementById("openTab");
+const closedTab = document.getElementById("closedTab");
+
 const loadAllIssues = async () => {
+  showLoading();
   const res = await fetch(
     "https://phi-lab-server.vercel.app/api/v1/lab/issues",
   );
   const data = await res.json();
 
   allIssues = data.data;
+
+  hideLoading();
   displayAllIssues(allIssues);
 };
 
-const displayAllIssues = async (issues) => {
-  const allIssueContainer = document.getElementById("allIssueContainer");
+const displayAllIssues = (issues) => {
   allIssueContainer.innerHTML = "";
 
   const issueCount = document.getElementById("issueCount");
@@ -63,10 +72,6 @@ const displayAllIssues = async (issues) => {
 
 loadAllIssues();
 
-const allTab = document.getElementById("allTab");
-const openTab = document.getElementById("openTab");
-const closedTab = document.getElementById("closedTab");
-
 allTab.addEventListener("click", () => {
   activeTab(allTab);
   displayAllIssues(allIssues);
@@ -99,3 +104,13 @@ const createElements = (arr) => {
   );
   return htmlElements.join(" ");
 };
+
+function showLoading() {
+  loadingSpinner.classList.remove("hidden");
+  allIssueContainer.classList.add("hidden");
+}
+
+function hideLoading() {
+  loadingSpinner.classList.add("hidden");
+  allIssueContainer.classList.remove("hidden");
+}
