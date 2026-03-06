@@ -1,13 +1,5 @@
 let allIssues = [];
 
-const createElements = (arr) => {
-  const htmlElements = arr.map(
-    (el) =>
-      `<span class="bg-[#FDE68A] rounded-full px-3 text-[14px]"> ${el}</span>`,
-  );
-  return htmlElements.join(" ");
-};
-
 const loadAllIssues = async () => {
   const res = await fetch(
     "https://phi-lab-server.vercel.app/api/v1/lab/issues",
@@ -19,7 +11,6 @@ const loadAllIssues = async () => {
 };
 
 const displayAllIssues = async (issues) => {
-  console.log(issues);
   const allIssueContainer = document.getElementById("allIssueContainer");
   allIssueContainer.innerHTML = "";
 
@@ -69,4 +60,42 @@ const displayAllIssues = async (issues) => {
     allIssueContainer.appendChild(card);
   });
 };
+
 loadAllIssues();
+
+const allTab = document.getElementById("allTab");
+const openTab = document.getElementById("openTab");
+const closedTab = document.getElementById("closedTab");
+
+allTab.addEventListener("click", () => {
+  activeTab(allTab);
+  displayAllIssues(allIssues);
+});
+
+openTab.addEventListener("click", () => {
+  activeTab(openTab);
+  const openIssues = allIssues.filter((issue) => issue.status === "open");
+  displayAllIssues(openIssues);
+});
+
+closedTab.addEventListener("click", () => {
+  activeTab(closedTab);
+  const closeIssues = allIssues.filter((issue) => issue.status === "closed");
+  displayAllIssues(closeIssues);
+});
+
+const activeTab = (btn) => {
+  allTab.classList.remove("btn-primary");
+  openTab.classList.remove("btn-primary");
+  closedTab.classList.remove("btn-primary");
+
+  btn.classList.add("btn-primary");
+};
+
+const createElements = (arr) => {
+  const htmlElements = arr.map(
+    (el) =>
+      `<span class="bg-[#FDE68A] rounded-full px-3 text-[14px]"> ${el}</span>`,
+  );
+  return htmlElements.join(" ");
+};
