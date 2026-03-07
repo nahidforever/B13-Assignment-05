@@ -35,7 +35,7 @@
 
         <div class="flex items-center gap-3">
           <input
-            type="text"
+            type="search"
             placeholder="Search issues..."
             class="input input-bordered w-40 md:w-64"
           />
@@ -47,6 +47,7 @@
     <main class="bg-base-200 min-h-screen p-6">
       <div class="max-w-[1110px] mx-auto mt-10">
         <div class="bg-base-100 p-6 rounded-lg shadow-sm">
+          <!-- All Tabs -->
           <div class="flex gap-2">
             <button id="allTab" class="btn btn-primary py-3 px-10">All</button>
             <button id="openTab" class="btn py-3 px-10">Open</button>
@@ -54,19 +55,37 @@
           </div>
         </div>
 
+        <!-- Count Container -->
+
         <div
-          class="bg-base-100 p-6 rounded-lg shadow-sm mt-6 flex items-center gap-2"
+          class="bg-base-100 p-6 rounded-lg shadow-sm mt-6 flex justify-between items-center"
         >
-          <div>
-            <img src="./assets/Aperture.png" alt="" />
+          <div class="flex items-center gap-2">
+            <div
+              class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center"
+            >
+              <img src="./assets/Aperture.png" class="w-8 h-8" alt="" />
+            </div>
+
+            <div>
+              <h2 class="font-bold text-lg">
+                <span id="issueCount">0</span> Issues
+              </h2>
+              <p class="text-sm text-gray-500">
+                Track and manage your project issues
+              </p>
+            </div>
           </div>
 
-          <div>
-            <h2 class="font-bold text-lg">
-              <span id="issueCount">0</span> Issues
-            </h2>
-            <p class="text-sm text-gray-500">
-              Track and manage your project issues
+          <div class="flex gap-3 text-sm items-center">
+            <p class="flex items-center gap-2">
+              <span class="w-3 h-3 bg-green-500 rounded-full"></span>
+              Open
+            </p>
+
+            <p class="flex items-center gap-2">
+              <span class="w-3 h-3 bg-purple-500 rounded-full"></span>
+              Closed
             </p>
           </div>
         </div>
@@ -79,8 +98,17 @@
           <span class="loading loading-dots loading-xl"></span>
         </div>
 
+        <!-- All Card -->
+
         <div id="allIssueContainer" class="grid grid-cols-3 gap-4 mt-7"></div>
       </div>
+
+      <dialog id="issue-details-modal" class="modal">
+
+       
+
+
+      </dialog>
     </main>
 
     <script src="./script/issues.js"></script>
