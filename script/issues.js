@@ -35,11 +35,11 @@ const displayAllIssues = (issues) => {
     const formattedDate = `${month}/${day}/${year}`;
 
     const card = document.createElement("div");
-    card.className = `bg-base-100 p-6 rounded-lg shadow-lg space-y-3`;
+    card.className = `bg-base-100 p-2 rounded-lg shadow-lg flex flex-col justify-between border-t-6 ${issue.status === "open" ? "border-green-500" : "border-purple-500"}`;
 
     card.onclick = () => openIssueModal(issue.id);
     card.innerHTML = `
-     <div class="flex justify-between items-center">
+           <div class="flex justify-between items-center">
               <p></p>
               <p
                 class="bg-[#FEECEC] text-red-600 py-0.5 px-5 rounded-full text-[12px]"
@@ -49,15 +49,15 @@ const displayAllIssues = (issues) => {
             </div>
 
             <div>
-              <h2 class="font-bold text-[14px]">
+              <h2 class="font-bold text-[14px] pt-3">
                 ${issue.title}
               </h2>
-              <p class="text-[#64748B] line-clamp-2 text-[12px]">
+              <p class="text-[#64748B] line-clamp-2 text-[12px] pt-3">
                 ${issue.description}
               </p>
             </div>
 
-            <div>
+            <div class = "pt-3">
               ${createElements(issue.labels)}
             </div>
 
@@ -77,19 +77,25 @@ loadAllIssues();
 
 allTab.addEventListener("click", () => {
   activeTab(allTab);
+  showLoading();
   displayAllIssues(allIssues);
+  hideLoading();
 });
 
 openTab.addEventListener("click", () => {
   activeTab(openTab);
+  showLoading();
   const openIssues = allIssues.filter((issue) => issue.status === "open");
   displayAllIssues(openIssues);
+  hideLoading();
 });
 
 closedTab.addEventListener("click", () => {
   activeTab(closedTab);
+  showLoading();
   const closeIssues = allIssues.filter((issue) => issue.status === "closed");
   displayAllIssues(closeIssues);
+  hideLoading();
 });
 
 const activeTab = (btn) => {
@@ -97,13 +103,18 @@ const activeTab = (btn) => {
   openTab.classList.remove("btn-primary");
   closedTab.classList.remove("btn-primary");
 
+  allTab.classList.add("btn-outline");
+  openTab.classList.add("btn-outline");
+  closedTab.classList.add("btn-outline");
+
+  btn.classList.remove("btn-outline");
   btn.classList.add("btn-primary");
 };
 
 const createElements = (arr) => {
   const htmlElements = arr.map(
     (el) =>
-      `<span class="bg-[#FDE68A] rounded-full px-3 text-[14px]"> ${el.toUpperCase()}</span>`,
+      `<span class="bg-[#FDE68A] rounded-full px-3 text-[12px]"> ${el.toUpperCase()}</span>`,
   );
   return htmlElements.join(" ");
 };
@@ -200,3 +211,21 @@ async function openIssueModal(issueId) {
 
   issueDetailsModal.showModal();
 }
+
+const btnSearch = document.getElementById("btnSearch");
+const inputSearch = document.getElementById("inputSearch");
+
+async function loadSearchIssue() {
+  const searchValue = inputSearch.value.trim().toLowerCase();
+
+  const res = await fetch(
+    `https://phi-lab-server.vercel.app/api/v1/lab/issues/search?q=${searchValue}`,
+  );
+
+  const data = await res.json();
+  displayAllIssues(data.data);
+}
+
+btnSearch.addEventListener("click", () => {
+  loadSearchIssue();
+});
