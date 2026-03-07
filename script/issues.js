@@ -226,6 +226,9 @@ async function loadSearchIssue() {
   displayAllIssues(data.data);
 }
 
-btnSearch.addEventListener("click", () => {
-  loadSearchIssue();
+btnSearch.addEventListener("click", async () => {
+  showLoading();
+  await loadSearchIssue();
+  hideLoading();
+  inputSearch.value = "";
 });
