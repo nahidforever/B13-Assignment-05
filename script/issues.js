@@ -150,7 +150,7 @@ async function openIssueModal(issueId) {
   issueDetailsCard.className = "modal-box";
   issueDetailsCard.innerHTML = `
      <div class="bg-white p-6 rounded-lg">
-            <!-- Title -->
+     
             <h2 class="text-2xl font-bold mb-2">
               ${issueDetails.title}
             </h2>
